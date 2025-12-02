@@ -8,7 +8,7 @@ export default function Home() {
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="w-full max-w-md bg-card rounded-lg border shadow-lg p-6 space-y-6">
         <div className="flex justify-center">
-          <WalletConnectButton />
+         
         </div>
         <MemoCard />
         <button>Generate test deposit address</button>

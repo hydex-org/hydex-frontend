@@ -18,6 +18,8 @@ import {
   useDisconnect,
   type UiWallet
 } from "@wallet-standard/react";
+import type { SolanaSignMessageFeature } from "@solana/wallet-standard-features";
+
 
 function truncateAddress(address: string): string {
   return `${address.slice(0, 4)}...${address.slice(-4)}`;
@@ -49,7 +51,7 @@ function WalletMenuItem({
 }) {
   const { setWalletAndAccount } = useSolana();
   const [isConnecting, connect] = useConnect(wallet);
-
+  
   const handleConnect = async () => {
     if (isConnecting) return;
 
@@ -59,7 +61,48 @@ function WalletMenuItem({
       if (accounts && accounts.length > 0) {
         const account = accounts[0];
         setWalletAndAccount(wallet, account);
-        onConnect();
+        console.log(account);
+        try {
+        const response = await fetch('http://localhost:8089/api/v1/connect_wallet', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            solana_wallet: account.address
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const result = await response.json();
+        console.log("POST response:", result);
+
+        try{
+
+          const response = await fetch('http://localhost:8089/api/v1/auth/challenge', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              solana_wallet: account.address,
+            })
+          });
+          console.log(response);
+
+          onConnect();
+        } catch(error){
+          console.log("Error occurred: " + error);
+        }
+        
+
+      } catch (error) {
+        console.log("Error occurred: " + error);
+      }
+        
       }
     } catch (err) {
       console.error(`Failed to connect ${wallet.name}:`, err);
@@ -95,6 +138,7 @@ function DisconnectButton({
       await disconnect();
       setWalletAndAccount(null, null);
       onDisconnect();
+      
     } catch (err) {
       console.error("Failed to disconnect wallet:", err);
     }

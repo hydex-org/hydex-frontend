@@ -15,6 +15,7 @@ import {
   type Signature
 } from "@solana/kit";
 import { getAddMemoInstruction } from "@solana-program/memo";
+import TwoTabPane from "./tabs/tabViewer";
 
 // Component that only renders when wallet is connected
 function ConnectedMemoCard({ account }: { account: UiWalletAccount }) {
@@ -99,14 +100,15 @@ export function MemoCard() {
 
   return (
     <div className="space-y-4 p-4 border rounded-lg">
-      <h3 className="text-lg font-semibold">Send Memo</h3>
+      {/* <h3 className="text-lg font-semibold">Send Memo</h3>
       {isConnected && selectedAccount ? (
         <ConnectedMemoCard account={selectedAccount} />
       ) : (
         <p className="text-gray-500 text-center py-4">
           Connect your wallet to send a memo
         </p>
-      )}
+      )} */}
+      <TwoTabPane/>
     </div>
   );
 }
