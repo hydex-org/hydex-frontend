@@ -11,7 +11,6 @@ export default function Home() {
          
         </div>
         <MemoCard />
-        <button>Generate test deposit address</button>
       </div>
     </div>
   );

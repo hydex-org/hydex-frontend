@@ -28,11 +28,20 @@ interface SolanaContextState {
   selectedAccount: UiWalletAccount | null;
   isConnected: boolean;
 
+  selectedUvfk: String | null;
+  selectedAccountIdx: number | null;
+
   // Wallet Actions
   setWalletAndAccount: (
     wallet: UiWallet | null,
     account: UiWalletAccount | null
   ) => void;
+
+  setUfvkAndAccountIdx: (
+    uvfk: String | null,
+    accountIdx: number | null
+  ) => void;
+
 }
 
 const SolanaContext = createContext<SolanaContextState | undefined>(undefined);
@@ -62,7 +71,8 @@ export function SolanaProvider({ children }: { children: React.ReactNode }) {
   const [selectedWallet, setSelectedWallet] = useState<UiWallet | null>(null);
   const [selectedAccount, setSelectedAccount] =
     useState<UiWalletAccount | null>(null);
-
+  const [selectedUvfk, setSelectedUvfk] = useState<String | null>(null);
+  const [selectedAccountIdx, setSelectedAccountIdx] = useState<number | null>(null);
   // Check if connected (account must exist in the wallet's accounts)
   const isConnected = useMemo(() => {
     if (!selectedAccount || !selectedWallet) return false;
@@ -85,6 +95,14 @@ export function SolanaProvider({ children }: { children: React.ReactNode }) {
     setSelectedAccount(account);
   };
 
+  const setUfvkAndAccountIdx = (
+    uvfkInput: String | null,
+    accountIdxInput: number | null
+  ) => {
+    setSelectedUvfk(uvfkInput);
+    setSelectedAccountIdx(accountIdxInput);
+  };
+
   // Create context value
   const contextValue = useMemo<SolanaContextState>(
     () => ({
@@ -98,9 +116,13 @@ export function SolanaProvider({ children }: { children: React.ReactNode }) {
       selectedWallet,
       selectedAccount,
       isConnected,
-      setWalletAndAccount
+
+      selectedUvfk,
+      selectedAccountIdx,
+      setWalletAndAccount,
+      setUfvkAndAccountIdx
     }),
-    [wallets, selectedWallet, selectedAccount, isConnected]
+    [wallets, selectedWallet, selectedAccount, isConnected, selectedUvfk, selectedAccountIdx]
   );
 
   return (

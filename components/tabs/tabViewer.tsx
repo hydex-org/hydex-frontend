@@ -3,13 +3,13 @@
 import * as React from "react";
 import { useSolana } from "../solana-provider";
 import { WalletConnectButton } from "../wallet-connect-button";
-
+import {GenerateShieldedAddressButton} from "../GenerateShieldedAddress";
 type TabKey = "first" | "second";
 
 export default function TwoTabPane() {
     const [active, setActive] = React.useState<TabKey>("first");
 
-    const { selectedWallet } = useSolana();
+    const { selectedWallet, selectedUvfk, selectedAccountIdx } = useSolana();
 
     const tabs = [
         { key: "first" as const, label: "ZCash -> Solana\n\nZEC->wZEC" },
@@ -76,11 +76,9 @@ export default function TwoTabPane() {
                     hidden={active !== "first"}
                     className="rounded-xl border border-zinc-200 p-4"
                 >
-                    {/* {!selectedWallet && (
-                        <WalletConnectButton />) : (
+
                     
-                    ) */}
-{/* } */}
+{selectedWallet && <GenerateShieldedAddressButton/>}
 
                 </section>
 
