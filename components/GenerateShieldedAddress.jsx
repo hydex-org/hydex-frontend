@@ -71,25 +71,40 @@ export function GenerateShieldedAddressButton() {
         );
       }
 
-      // For Phantom and most Solana wallets, use the window provider directly
+                 // For Phantom and most Solana wallets, use the window provider directly
       let signedMessage;
+      
+      // Helper to convert Uint8Array to base64
+      function uint8ToBase64(bytes) {
+        let binary = '';
+        for (let i = 0; i < bytes.length; i++) {
+          binary += String.fromCharCode(bytes[i]);
+        }
+        return btoa(binary);
+      }
       
       if (window.phantom?.solana) {
         // Use Phantom's signMessage
-        const { signature } = await window.phantom.solana.signMessage(
+        const result = await window.phantom.solana.signMessage(
           messageBytes,
           "utf8"
         );
-        signedMessage = btoa(String.fromCharCode(...signature));
+        // Handle both formats: { signature: Uint8Array } or just Uint8Array
+        const sig = result.signature || result;
+        console.log("Signature bytes length:", sig.length);
+        signedMessage = uint8ToBase64(sig);
       } else if (window.solana?.signMessage) {
         // Generic Solana wallet adapter
-        const { signature } = await window.solana.signMessage(messageBytes, "utf8");
-        signedMessage = btoa(String.fromCharCode(...signature));
+        const result = await window.solana.signMessage(messageBytes, "utf8");
+        const sig = result.signature || result;
+        console.log("Signature bytes length:", sig.length);
+        signedMessage = uint8ToBase64(sig);
       } else {
         throw new Error("Could not find wallet provider for message signing");
       }
       
       console.log("Message signed successfully");
+      console.log("Signed message (base64):", signedMessage);
 
       // 3. Verify wallet and get access token
       console.log("[3/4] Verifying wallet...");
