@@ -1,6 +1,6 @@
 "use client";
 
-import { WalletConnectButton } from "@/components/wallet-connect-button";
+import { WalletConnectButtonBig } from "@/components/wallet-connect-button-bg";
 import { MemoCard } from "@/components/memo-card";
 import TwoTabPane from "@/components/tabs/tabViewer";
 import { DepositAddressSection } from "@/components/deposit-addres-section";
@@ -20,9 +20,11 @@ export default function Home() {
        
     
         <TwoTabPane/>
-        {!selectedWallet &&
-        <WalletConnectButton/>
-        }
+        {!selectedWallet && (
+          <div className="flex justify-center w-full">
+            <WalletConnectButtonBig/>
+          </div>
+        )}
         {!selectedTab && 
           selectedWallet &&
             <DepositAddressSection/>
