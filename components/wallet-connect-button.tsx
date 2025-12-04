@@ -89,7 +89,7 @@ function WalletMenuItem({
       onClick={handleConnect}
       disabled={isConnecting}
     >
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 ">
         <WalletIcon wallet={wallet} className="h-6 w-6" />
         <span className="font-medium">{wallet.name}</span>
       </div>
@@ -138,22 +138,22 @@ export function WalletConnectButton() {
   return (
     <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="min-w-[140px] justify-between">
+        <Button variant="outline" className="min-w-[140px] justify-between bg-[#97f01d] text-white hover:bg-[#97f01d]/90">
           {isConnected && selectedWallet && selectedAccount ? (
             <>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 text-black">
                 <WalletIcon wallet={selectedWallet} className="h-4 w-4" />
                 <span className="font-mono text-sm">
                   {truncateAddress(selectedAccount.address)}
                 </span>
               </div>
-              <ChevronDown className="ml-2 h-4 w-4" />
+              <ChevronDown className="ml-2 h-4 w-4 text-black" />
             </>
           ) : (
             <>
-              <Wallet className="mr-2 h-4 w-4" />
-              <span>Connect Wallet</span>
-              <ChevronDown className="ml-2 h-4 w-4" />
+              <Wallet className="mr-2 h-4 w-4 text-black" />
+              <span className="text-black">Connect Wallet</span>
+              <ChevronDown className="ml-2 h-4 w-4 text-black" />
             </>
           )}
         </Button>

@@ -5,21 +5,21 @@ import { useSolana } from "./solana-provider";
 import { GenerateShieldedAddressButton } from "./GenerateShieldedAddress";
 
 export function DepositAddressSection() {
-  const { selectedUvfk } = useSolana();
+const { selectedUvfk } = useSolana();
 
-  const copy = async () => {
-    if (!selectedUvfk) return;
-    try {
-      //await navigator.clipboard.writeText(sele);
-    } catch {
-      // ignore
-    }
-  };
+const copy = async () => {
+  if (selectedUvfk == null) return;
+  try {
+    await navigator.clipboard.writeText(String(selectedUvfk));
+  } catch {
+    // ignore
+  }
+};
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 ">
       {/* Top blue outlined card */}
-      <div className="rounded-2xl border border-sky-500/70 bg-slate-900/40 p-6 shadow-sm">
+      <div className="rounded-2xl border border-[#97f01d] bg-slate-900/40 p-6 shadow-sm">
         <p className="mb-5 text-lg font-medium leading-snug text-zinc-200/90">
           Generate a shielded Zcash address to deposit your ZEC. Once received, your funds will be
           bridged to wZEC on Solana.
@@ -43,13 +43,13 @@ export function DepositAddressSection() {
                 <span className="block truncate">{selectedUvfk}</span>
               </div>
 
-              <button
-                type="button"
-                onClick={copy}
-                className="grid h-12 w-12 place-items-center rounded-xl bg-black/25 text-zinc-200 hover:bg-black/35 transition"
-                aria-label="Copy address"
-                title="Copy"
-              >
+<button
+  type="button"
+  onClick={copy}
+  className="grid h-12 w-12 place-items-center rounded-xl bg-black/25 text-zinc-200 transition-colors hover:bg-black/35 active:bg-black/50"
+  aria-label="Copy address"
+  title="Copy"
+>
                 {/* simple copy icon */}
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                   <path
