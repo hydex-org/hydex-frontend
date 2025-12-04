@@ -45,7 +45,7 @@ export default function TwoTabPane() {
   const isFirst = active === "first";
 
 return (
-  <div className="space-y-4 flex justify-center">
+  <div className="space-y-3 flex justify-center">
     {/* Tabs outer box */}
     <div className="inline-flex rounded-xl border border-white/10 bg-zinc-900/60 p-1">
       {/* Tab list */}
