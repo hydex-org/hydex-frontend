@@ -6,6 +6,7 @@ import TwoTabPane from "@/components/tabs/tabViewer";
 import { DepositAddressSection } from "@/components/deposit-addres-section";
 import { useSolana } from "@/components/solana-provider";
 import { useState } from "react";
+import BridgeActivityCard from "@/components/tabs/tabViewerBottom";
 
 export default function Home() {
   const {selectedWallet, selectedTab} = useSolana();
@@ -21,9 +22,12 @@ export default function Home() {
         <TwoTabPane/>
         
         {selectedWallet && !selectedTab &&
+       
+        
         <DepositAddressSection/>
+        
         }
-
+      <BridgeActivityCard/>
         
       </div>
     </div>
