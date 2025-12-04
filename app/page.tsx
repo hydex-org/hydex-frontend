@@ -18,14 +18,14 @@ export default function Home() {
          
         </div>
        
-
+    
         <TwoTabPane/>
-        
-        {selectedWallet && !selectedTab &&
-       
-        
-        <DepositAddressSection/>
-        
+        {!selectedWallet &&
+        <WalletConnectButton/>
+        }
+        {!selectedTab && 
+          selectedWallet &&
+            <DepositAddressSection/>
         }
       <BridgeActivityCard/>
         

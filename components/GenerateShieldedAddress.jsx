@@ -9,7 +9,7 @@ export function GenerateShieldedAddressButton() {
   const onGenerateShieldAddress = async () => {
     try {
       //console.log(selectedAccount);
-      const response = await fetch("http://localhost:8089/api/v1/generate-address", {
+      const response = await fetch("http://localhost:8089/v1/generate-address", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

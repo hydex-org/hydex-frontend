@@ -254,12 +254,12 @@ function Rail({
     <div className="relative">
       <div
         className={[
-          "relative z-10 grid h-9 w-9 place-items-center rounded-full border-[3px]",
+          "grid h-9 w-9 place-items-center rounded-full border-[3px]",
           isDone
-            ? "border-[#a6ff4d]/90 bg-[#0b0f14] shadow-[0_0_0_6px_rgba(166,255,77,.08)]"
+            ? "border-[#a6ff4d]/90 shadow-[0_0_0_6px_rgba(166,255,77,.08)]"
             : isActive
-              ? "border-[#2f7cff]/90 bg-[#0b0f14] shadow-[0_0_0_6px_rgba(47,124,255,.08)]"
-              : "border-white/25 bg-[#0b0f14] opacity-45",
+              ? "border-[#2f7cff]/90 shadow-[0_0_0_6px_rgba(47,124,255,.08)]"
+              : "border-white/25 opacity-45",
         ].join(" ")}
         aria-hidden="true"
       >
