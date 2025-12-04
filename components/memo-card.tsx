@@ -16,7 +16,11 @@ import {
 } from "@solana/kit";
 import { getAddMemoInstruction } from "@solana-program/memo";
 import TwoTabPane from "./tabs/tabViewer";
+import { GenerateShieldedAddressButton } from "./GenerateShieldedAddress";
+import React from "react";
+import { DepositAddressSection } from "./deposit-addres-section";
 
+type TabKey = "first" | "second";
 // Component that only renders when wallet is connected
 function ConnectedMemoCard({ account }: { account: UiWalletAccount }) {
   const { rpc, chain } = useSolana();
@@ -94,9 +98,10 @@ function ConnectedMemoCard({ account }: { account: UiWalletAccount }) {
   );
 }
 
+
 // Main memo component
 export function MemoCard() {
-  const { selectedAccount, isConnected } = useSolana();
+  const { selectedAccount, isConnected, selectedUvfk } = useSolana();
 
   return (
     <div className="space-y-4 p-4 border rounded-lg">
@@ -108,7 +113,6 @@ export function MemoCard() {
           Connect your wallet to send a memo
         </p>
       )} */}
-      <TwoTabPane/>
     </div>
   );
 }

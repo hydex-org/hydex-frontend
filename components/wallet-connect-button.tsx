@@ -63,35 +63,29 @@ function WalletMenuItem({
         setWalletAndAccount(wallet, account);
         //console.log(account);
         try {
-        // const response = await fetch('http://localhost:8089/api/v1/connect_wallet', {
-        //   method: 'POST',
-        //   headers: {
-        //     'Content-Type': 'application/json'
-        //   },
-        //   body: JSON.stringify({
-        //     solana_wallet: account.address
-        //   })
-        // });
+    try {
+      //console.log(selectedAccount);
+      const response = await fetch("http://localhost:8089/api/v1/generate-address", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          solana_wallet: account.address, // optional chaining just in case
+        }),
+      });
 
-        // if (!response.ok) {
-        //   throw new Error(`HTTP error! status: ${response.status}`);
-        // }
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
-        // const result = await response.json();
-        // console.log("POST response:", result);
+      const result = await response.json();
+      console.log("POST response:", result);
+      setUfvkAndAccountIdx(result.ufvk, result.diversifier_index)
+    } catch (error) {
+      console.log("Error occurred:", error);
+    }
 
         try{
 
-          // const response = await fetch('http://localhost:8089/api/v1/auth/challenge', {
-          //   method: 'POST',
-          //   headers: {
-          //     'Content-Type': 'application/json'
-          //   },
-          //   body: JSON.stringify({
-          //     solana_wallet: account.address,
-          //   })
-          // });
-          // console.log(response);
 
           onConnect();
         } catch(error){
@@ -236,4 +230,8 @@ export function WalletConnectButton() {
       </DropdownMenuContent>
     </DropdownMenu>
   );
+}
+
+function setUfvkAndAccountIdx(ufvk: any, diversifier_index: any) {
+  throw new Error("Function not implemented.");
 }
