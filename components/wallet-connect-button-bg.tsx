@@ -9,17 +9,16 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuTrigger
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Wallet, LogOut } from "lucide-react";
 import {
   useConnect,
   useDisconnect,
-  type UiWallet
+  type UiWallet,
 } from "@wallet-standard/react";
 import type { SolanaSignMessageFeature } from "@solana/wallet-standard-features";
-
 
 function truncateAddress(address: string): string {
   return `${address.slice(0, 4)}...${address.slice(-4)}`;
@@ -27,7 +26,7 @@ function truncateAddress(address: string): string {
 
 function WalletIcon({
   wallet,
-  className
+  className,
 }: {
   wallet: UiWallet;
   className?: string;
@@ -44,14 +43,15 @@ function WalletIcon({
 
 function WalletMenuItem({
   wallet,
-  onConnect
+  onConnect,
 }: {
   wallet: UiWallet;
   onConnect: () => void;
 }) {
-  const { setWalletAndAccount, setUfvkAndAccountIdx, selectedUvfk } = useSolana();
+  const { setWalletAndAccount, setUfvkAndAccountIdx, selectedUvfk } =
+    useSolana();
   const [isConnecting, connect] = useConnect(wallet);
-  
+
   const handleConnect = async () => {
     if (isConnecting) return;
 
@@ -63,20 +63,14 @@ function WalletMenuItem({
         setWalletAndAccount(wallet, account);
         //console.log(account);
         try {
-
-        try{
-
-
-          onConnect();
-        } catch(error){
+          try {
+            onConnect();
+          } catch (error) {
+            console.log("Error occurred: " + error);
+          }
+        } catch (error) {
           console.log("Error occurred: " + error);
         }
-        
-
-      } catch (error) {
-        console.log("Error occurred: " + error);
-      }
-        
       }
     } catch (err) {
       console.error(`Failed to connect ${wallet.name}:`, err);
@@ -99,7 +93,7 @@ function WalletMenuItem({
 
 function DisconnectButton({
   wallet,
-  onDisconnect
+  onDisconnect,
 }: {
   wallet: UiWallet;
   onDisconnect: () => void;
@@ -112,7 +106,6 @@ function DisconnectButton({
       await disconnect();
       setWalletAndAccount(null, null);
       onDisconnect();
-      
     } catch (err) {
       console.error("Failed to disconnect wallet:", err);
     }
@@ -138,7 +131,10 @@ export function WalletConnectButtonBig() {
   return (
     <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="w-full justify-center bg-[#97f01d] text-white hover:bg-[#97f01d]/90 py-6">
+        <Button
+          variant="outline"
+          className="w-full justify-center bg-[#97f01d] text-white hover:bg-[#97f01d]/90 py-6"
+        >
           {isConnected && selectedWallet && selectedAccount ? (
             <div className="flex items-center gap-3 text-black">
               <WalletIcon wallet={selectedWallet} className="h-6 w-6" />
@@ -149,7 +145,9 @@ export function WalletConnectButtonBig() {
           ) : (
             <div className="flex items-center gap-3">
               <Wallet className="h-6 w-6 text-black" />
-              <span className="text-black text-base font-semibold">Connect Wallet</span>
+              <span className="text-black text-base font-semibold">
+                Connect Wallet
+              </span>
             </div>
           )}
         </Button>

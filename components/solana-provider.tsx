@@ -1,12 +1,24 @@
 "use client";
 
-import React, { createContext, useContext, useState, useMemo } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useMemo,
+  useEffect,
+  useCallback,
+} from "react";
 import {
   useWallets,
   type UiWallet,
-  type UiWalletAccount
+  type UiWalletAccount,
 } from "@wallet-standard/react";
-import { createSolanaRpc, createSolanaRpcSubscriptions } from "@solana/kit";
+import {
+  createSolanaRpc,
+  createSolanaRpcSubscriptions,
+  address,
+  lamports,
+} from "@solana/kit";
 import { StandardConnect } from "@wallet-standard/core";
 
 // Create RPC connection
@@ -27,6 +39,7 @@ interface SolanaContextState {
   selectedWallet: UiWallet | null;
   selectedAccount: UiWalletAccount | null;
   isConnected: boolean;
+  balance: string | null; // SOL balance as string
 
   selectedUvfk: String | null;
   selectedAccountIdx: number | null;
@@ -43,10 +56,9 @@ interface SolanaContextState {
     accountIdx: number | null
   ) => void;
 
-  setSelectedTab: (
-    inp: Boolean | false
-  ) => void
+  setSelectedTab: (inp: Boolean | false) => void;
 
+  refreshBalance: () => Promise<void>;
 }
 
 const SolanaContext = createContext<SolanaContextState | undefined>(undefined);
@@ -77,8 +89,35 @@ export function SolanaProvider({ children }: { children: React.ReactNode }) {
   const [selectedAccount, setSelectedAccount] =
     useState<UiWalletAccount | null>(null);
   const [selectedUvfk, setSelectedUvfk] = useState<String | null>(null);
-  const [selectedAccountIdx, setSelectedAccountIdx] = useState<number | null>(null);
+  const [selectedAccountIdx, setSelectedAccountIdx] = useState<number | null>(
+    null
+  );
   const [selectedTab, setSelectedTabVal] = useState<Boolean>(false);
+  const [balance, setBalance] = useState<string | null>(null);
+
+  // Fetch balance for the selected account
+  const refreshBalance = useCallback(async () => {
+    if (!selectedAccount?.address) {
+      setBalance(null);
+      return;
+    }
+    try {
+      const result = await rpc
+        .getBalance(address(selectedAccount.address))
+        .send();
+      // Convert lamports to SOL (1 SOL = 1e9 lamports)
+      const solBalance = Number(result.value) / 1e9;
+      setBalance(solBalance.toFixed(4));
+    } catch (err) {
+      console.error("Failed to fetch balance:", err);
+      setBalance(null);
+    }
+  }, [selectedAccount?.address]);
+
+  // Fetch balance when account changes
+  useEffect(() => {
+    refreshBalance();
+  }, [refreshBalance]);
   // Check if connected (account must exist in the wallet's accounts)
   const isConnected = useMemo(() => {
     if (!selectedAccount || !selectedWallet) return false;
@@ -109,9 +148,7 @@ export function SolanaProvider({ children }: { children: React.ReactNode }) {
     setSelectedAccountIdx(accountIdxInput);
   };
 
-  const setSelectedTab = (
-    inp: Boolean
-  ) => {
+  const setSelectedTab = (inp: Boolean) => {
     setSelectedTabVal(inp);
   };
   // Create context value
@@ -127,15 +164,27 @@ export function SolanaProvider({ children }: { children: React.ReactNode }) {
       selectedWallet,
       selectedAccount,
       isConnected,
+      balance,
 
       selectedUvfk,
       selectedAccountIdx,
       selectedTab,
       setWalletAndAccount,
       setUfvkAndAccountIdx,
-      setSelectedTab
+      setSelectedTab,
+      refreshBalance,
     }),
-    [wallets, selectedWallet, selectedAccount, isConnected, selectedUvfk, selectedAccountIdx, selectedTab]
+    [
+      wallets,
+      selectedWallet,
+      selectedAccount,
+      isConnected,
+      balance,
+      selectedUvfk,
+      selectedAccountIdx,
+      selectedTab,
+      refreshBalance,
+    ]
   );
 
   return (
