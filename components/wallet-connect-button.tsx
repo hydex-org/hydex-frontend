@@ -63,28 +63,6 @@ function WalletMenuItem({
         setWalletAndAccount(wallet, account);
         //console.log(account);
         try {
-    try {
-      //console.log(selectedAccount);
-      const response = await fetch("http://localhost:8089/api/v1/generate-address", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          solana_wallet: account.address, // optional chaining just in case
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const result = await response.json();
-      console.log("POST response:", result);
-      setUfvkAndAccountIdx(result.deposit_address, result.diversifier_index)
-      console.log(selectedUvfk);
-      
-    } catch (error) {
-      console.log("Error occurred:", error);
-    }
 
         try{
 
