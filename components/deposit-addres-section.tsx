@@ -72,7 +72,7 @@ const copy = async () => {
           </div>
 
           {/* Solana receiving address */}
-          <div className="space-y-2">
+          {/* <div className="space-y-2">
             <div className="text-2xl font-semibold text-zinc-100">Solana Receiving Address</div>
 
             <input
@@ -81,7 +81,7 @@ const copy = async () => {
             />
 
             <div className="text-base text-zinc-400">Where you want to receive your wZEC on Solana</div>
-          </div>
+          </div> */}
 
           {/* Stats card */}
           <div className="rounded-2xl bg-white/5 px-6 py-6 ring-1 ring-white/5">
