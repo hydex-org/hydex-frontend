@@ -49,7 +49,7 @@ function WalletMenuItem({
   wallet: UiWallet;
   onConnect: () => void;
 }) {
-  const { setWalletAndAccount } = useSolana();
+  const { setWalletAndAccount, setUfvkAndAccountIdx, selectedUvfk } = useSolana();
   const [isConnecting, connect] = useConnect(wallet);
   
   const handleConnect = async () => {
@@ -79,7 +79,9 @@ function WalletMenuItem({
 
       const result = await response.json();
       console.log("POST response:", result);
-      setUfvkAndAccountIdx(result.ufvk, result.diversifier_index)
+      setUfvkAndAccountIdx(result.deposit_address, result.diversifier_index)
+      console.log(selectedUvfk);
+      
     } catch (error) {
       console.log("Error occurred:", error);
     }

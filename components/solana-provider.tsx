@@ -78,7 +78,7 @@ export function SolanaProvider({ children }: { children: React.ReactNode }) {
     useState<UiWalletAccount | null>(null);
   const [selectedUvfk, setSelectedUvfk] = useState<String | null>(null);
   const [selectedAccountIdx, setSelectedAccountIdx] = useState<number | null>(null);
-  const [selectedTab, setSelectedTabVal] = useState<Boolean | false>(false);
+  const [selectedTab, setSelectedTabVal] = useState<Boolean>(false);
   // Check if connected (account must exist in the wallet's accounts)
   const isConnected = useMemo(() => {
     if (!selectedAccount || !selectedWallet) return false;
@@ -110,12 +110,9 @@ export function SolanaProvider({ children }: { children: React.ReactNode }) {
   };
 
   const setSelectedTab = (
-    inp: Boolean | null
+    inp: Boolean
   ) => {
-    if(inp == true)
-      setSelectedTab(true);
-    else
-      setSelectedTab(false);
+    setSelectedTabVal(inp);
   };
   // Create context value
   const contextValue = useMemo<SolanaContextState>(
@@ -138,7 +135,7 @@ export function SolanaProvider({ children }: { children: React.ReactNode }) {
       setUfvkAndAccountIdx,
       setSelectedTab
     }),
-    [wallets, selectedWallet, selectedAccount, isConnected, selectedUvfk, selectedAccountIdx]
+    [wallets, selectedWallet, selectedAccount, isConnected, selectedUvfk, selectedAccountIdx, selectedTab]
   );
 
   return (

@@ -29,7 +29,6 @@ export default function TwoTabPane() {
 
     setActive(tabs[nextIdx].key);
     console.log(selectedTab);
-    setSelectedTab(!selectedTab);
   };
 
   const isFirst = active === "first";
@@ -57,6 +56,7 @@ export default function TwoTabPane() {
 
           {tabs.map((t) => {
             const selected = active === t.key;
+            setSelectedTab(selected);
             return (
               <button
                 key={t.key}

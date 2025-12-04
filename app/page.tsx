@@ -8,7 +8,7 @@ import { useSolana } from "@/components/solana-provider";
 import { useState } from "react";
 
 export default function Home() {
-  const {selectedWallet} = useSolana();
+  const {selectedWallet, selectedTab} = useSolana();
   const [active, setActive] = useState(false);
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
@@ -20,7 +20,7 @@ export default function Home() {
 
         <TwoTabPane/>
         
-        {selectedWallet && 
+        {selectedWallet && !selectedTab &&
         <DepositAddressSection/>
         }
 
