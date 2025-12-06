@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { useSolana } from "./solana-provider";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
 export function WithdrawSection() {
   const { selectedAccount } = useSolana();
@@ -85,15 +86,11 @@ export function WithdrawSection() {
     setStatus("Initiating withdrawal...");
 
     try {
-      // 1. Get auth token
-      const challengeRes = await fetch(
-        "http://localhost:3001/v1/auth/challenge",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ solana_pubkey: selectedAccount.address }),
-        }
-      );
+      const challengeRes = await fetch(`${API_URL}/v1/auth/challenge`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ solana_pubkey: selectedAccount.address }),
+      });
       const { challenge, nonce } = await challengeRes.json();
 
       // 2. Sign message
@@ -138,26 +135,23 @@ export function WithdrawSection() {
       }
 
       // 3. Verify and get token
-      const verifyRes = await fetch(
-        "http://localhost:3001/v1/auth/verify-wallet",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            solana_pubkey: selectedAccount.address,
-            signed_message: signedMessage,
-            nonce,
-            message: challenge,
-          }),
-        }
-      );
+      const verifyRes = await fetch(`${API_URL}/v1/auth/verify-wallet`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          solana_pubkey: selectedAccount.address,
+          signed_message: signedMessage,
+          nonce,
+          message: challenge,
+        }),
+      });
       const { access_token } = await verifyRes.json();
 
       // 4. Create burn intent
       setStatus("Creating burn intent...");
       const amountZatoshi = Math.floor(parseFloat(amount) * 100_000_000);
 
-      const burnRes = await fetch("http://localhost:3001/v1/burn-intents", {
+      const burnRes = await fetch(`${API_URL}/v1/burn-intents`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
