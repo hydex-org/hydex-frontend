@@ -36,7 +36,7 @@ export function GenerateShieldedAddressButton() {
 
       // 1. Request auth challenge
       console.log("[1/4] Requesting auth challenge...");
-      const challengeResponse = await fetch("http://localhost:3001/v1/auth/challenge", {
+      const challengeResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/challenge`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -108,7 +108,7 @@ export function GenerateShieldedAddressButton() {
 
       // 3. Verify wallet and get access token
       console.log("[3/4] Verifying wallet...");
-      const verifyResponse = await fetch("http://localhost:3001/v1/auth/verify-wallet", {
+      const verifyResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/auth/verify-wallet`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -129,7 +129,7 @@ export function GenerateShieldedAddressButton() {
 
       // 4. Create deposit intent
       console.log("[4/4] Creating deposit intent...");
-      const depositResponse = await fetch("http://localhost:3001/v1/deposit-intents", {
+      const depositResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/deposit-intents`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

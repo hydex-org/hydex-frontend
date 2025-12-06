@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useSolana } from "./solana-provider";
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export function WithdrawSection() {
   const { selectedAccount } = useSolana();
